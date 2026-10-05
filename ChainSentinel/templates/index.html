@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f3f5ef">
+	<title>ChainSentinel | Transaction Security</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+	<header class="topbar">
+		<a class="brand" href="/" aria-label="ChainSentinel home"><span class="brand-mark">C</span><span>chain<span class="brand-light">sentinel</span></span></a>
+		<div class="topbar-right"><span class="network-label"><span class="live-dot"></span> LOCAL POLICY ENGINE</span><span class="tag">PRE-SIGN SECURITY</span></div>
+	</header>
+
+	<main>
+		<section class="hero">
+			<div class="hero-copy">
+				<p class="eyebrow"><span>01</span> INTENT-AWARE TRANSACTION FIREWALL</p>
+				<h1>Know what<br>you’re <em>really</em> signing.</h1>
+				<p class="sub">Transaction intent, decoded. ChainSentinel checks what a wallet is asked to do against what its owner actually means to do.</p>
+				<div class="hero-foot"><span class="hero-rule"></span><span>SIMULATE · EXPLAIN · PROTECT</span></div>
+			</div>
+			<aside class="hero-card">
+				<div class="status-top"><span>FIREWALL STATUS</span><span class="status-icon">✓</span></div>
+				<div class="active-line"><span class="live-dot"></span> ACTIVE</div>
+				<p>Local rules are watching every preflight.</p>
+				<div class="status-meta"><span>POLICY</span><b>INTENT / V1</b></div>
+				<div class="status-meta"><span>NETWORK</span><b>5 CHAINS</b></div>
+			</aside>
+		</section>
+
+		<section class="section-heading"><div><span class="section-index">01 / PREFLIGHT</span><h2>Inspect a transaction</h2></div><p>Nothing is broadcast. Your keys stay yours.</p></section>
+		<section class="grid">
+			<div class="panel form-panel">
+				<div class="head"><div><span class="panel-kicker">TRANSACTION INPUT</span><h2>Build a preflight</h2></div><span class="step-mark">A</span></div>
+				<form id="scanForm">
+					<label>Wallet address<input id="wallet" autocomplete="off" value="0x1234567890123456789012345678901234567890"></label>
+					<div class="two">
+						<label>Network<select id="chain"><option>Ethereum</option><option>Polygon</option><option>Base</option><option>Arbitrum</option><option>UnknownNet</option></select></label>
+						<label>Requested action<select id="action"><option>transfer</option><option>approve</option><option>setApprovalForAll</option><option>transferFrom</option><option>permit</option><option>upgradeTo</option></select></label>
+					</div>
+					<label>Recipient / contract<input id="target" autocomplete="off" value="0x1234567890123456789012345678901234567890"></label>
+					<div class="two">
+						<label>Amount<input id="amount" type="text" value="25"></label>
+						<label>Asset symbol<input id="token" value="ETH"></label>
+					</div>
+					<label>What are you trying to do?<textarea id="intent">Send 25 ETH to my friend</textarea></label>
+					<button class="scan-button" type="submit"><span>RUN SECURITY PREFLIGHT</span><span aria-hidden="true">↗</span></button>
+				</form>
+				<div class="presets-label">DEMO SCENARIOS <span>LOAD A TEST CASE</span></div>
+				<div class="presets">
+					<button type="button" class="ghost" onclick="danger()">Approval attack</button>
+					<button type="button" class="ghost" onclick="safe()">Safe transfer</button>
+					<button type="button" class="ghost" onclick="high()">High-value</button>
+					<button type="button" class="ghost" onclick="unl()">Unlimited approval</button>
+					<button type="button" class="ghost" onclick="owner()">Ownership takeover</button>
+				</div>
+			</div>
+
+			<div class="panel decision-panel">
+				<div class="head"><div><span class="panel-kicker">LIVE ANALYSIS</span><h2>Security decision</h2></div><span class="step-mark">B</span></div>
+				<div id="empty" class="empty"><div class="scan-orbit"><span>↗</span></div><b>Awaiting transaction</b><p>Run a preflight to see the risk score, reasoning, and recommended action.</p><div class="empty-foot"><span class="live-dot"></span> READY TO ANALYZE</div></div>
+				<div id="result" class="hidden">
+					<div class="scoreline"><div><small>RISK SCORE <span class="score-out-of">/ 100</span></small><div id="score" class="score">0</div></div><div id="verdict" class="verdict">ALLOW</div></div>
+					<div class="meter"><div id="meter"></div></div>
+					<div class="decision-caption"><span>POLICY FINDINGS</span><span>EXPLAINABLE SCORE</span></div>
+					<ul id="reasons"></ul>
+					<div class="recommend"><b><span>↳</span> Recommended action</b><p id="recommend"></p></div>
+					<div class="decision-id">DECISION ID <code id="scanid"></code></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section-heading analytics-heading"><div><span class="section-index">02 / MONITORING</span><h2>Protection activity</h2></div><p>Local audit trail · SQLite</p></section>
+		<section class="dashboard">
+			<div class="panel analytics-panel"><div class="head"><div><span class="panel-kicker">ALL-TIME TOTALS</span><h2>Firewall activity</h2></div><span class="analytics-mark">↗</span></div><div class="stats"><div class="stat-total"><b id="total">0</b><small>Total scans</small></div><div class="stat-blocked"><b id="blocked">0</b><small>Blocked</small></div><div class="stat-warned"><b id="warned">0</b><small>Warnings</small></div><div class="stat-allowed"><b id="allowed">0</b><small>Allowed</small></div></div></div>
+			<div class="panel history-panel"><div class="head"><div><span class="panel-kicker">LATEST ACTIVITY</span><h2>Recent decisions</h2></div><span class="audit-label">AUDIT TRAIL</span></div><div id="history">No scans yet.</div></div>
+		</section>
+
+		<section class="architecture-wrap"><div class="architecture-title"><span class="section-index">HOW IT WORKS</span><span>FOUR CHECKS. ONE CLEAR DECISION.</span></div><div class="architecture"><div><span class="flow-number">01</span><b>User intent</b><small>What the user says</small></div><i>→</i><div><span class="flow-number">02</span><b>Transaction parser</b><small>Action, target, value</small></div><i>→</i><div><span class="flow-number">03</span><b>Risk engine</b><small>Rules + mismatch</small></div><i>→</i><div><span class="flow-number">04</span><b>Decision firewall</b><small>Allow / warn / block</small></div></div></section>
+		<footer><span class="brand"><span class="brand-mark">C</span><span>chain<span class="brand-light">sentinel</span></span></span><span>LOCAL DEMO · NOT A GUARANTEE OF TRANSACTION SAFETY</span></footer>
+	</main>
+	<script src="/static/app.js"></script>
+</body>
+</html>
